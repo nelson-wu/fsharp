@@ -2058,6 +2058,7 @@ Microsoft.FSharp.Core.Operators: System.IO.TextReader ConsoleIn[T]()
 Microsoft.FSharp.Core.Operators: System.IO.TextWriter ConsoleError[T]()
 Microsoft.FSharp.Core.Operators: System.IO.TextWriter ConsoleOut[T]()
 Microsoft.FSharp.Core.Operators: System.Object Box[T](T)
+Microsoft.FSharp.Core.Operators: System.String NameOf[T](T)
 Microsoft.FSharp.Core.Operators: System.String ToString[T](T)
 Microsoft.FSharp.Core.Operators: System.String op_Concatenate(System.String, System.String)
 Microsoft.FSharp.Core.Operators: System.Tuple`2[TKey,TValue] KeyValuePattern[TKey,TValue](System.Collections.Generic.KeyValuePair`2[TKey,TValue])
@@ -2697,7 +2698,8 @@ Microsoft.FSharp.Reflection.UnionCaseInfo: System.String Name
 Microsoft.FSharp.Reflection.UnionCaseInfo: System.String ToString()
 Microsoft.FSharp.Reflection.UnionCaseInfo: System.String get_Name()
 Microsoft.FSharp.Reflection.UnionCaseInfo: System.Type DeclaringType
-Microsoft.FSharp.Reflection.UnionCaseInfo: System.Type get_DeclaringType()"
+Microsoft.FSharp.Reflection.UnionCaseInfo: System.Type get_DeclaringType()
+"
 #if CROSS_PLATFORM_COMPILER
         // disabled because of slight order and GetMember discrepencies
         ()
