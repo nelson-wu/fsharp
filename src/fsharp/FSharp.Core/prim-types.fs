@@ -705,13 +705,17 @@ namespace Microsoft.FSharp.Core
             let inline SetArray4D (target: 'T[,,,]) (index1: int) (index2: int) (index3: int) (index4: int) (value:'T) = 
                 (# "stelem.multi 4 !0" type ('T) target index1 index2 index3 index4 value #)  
 
-            let inline Array4DLength1 (arr: 'T[,,,]) =  (# "ldlen.multi 4 0" arr : int #)  
+            let inline GetArray4DLength1 (arr: 'T[,,,]) =  (# "ldlen.multi 4 0" arr : int #)  
 
             let inline Array4DLength2 (arr: 'T[,,,]) =  (# "ldlen.multi 4 1" arr : int #)  
 
             let inline Array4DLength3 (arr: 'T[,,,]) =  (# "ldlen.multi 4 2" arr : int #)  
 
             let inline Array4DLength4 (arr: 'T[,,,]) =  (# "ldlen.multi 4 3" arr : int #)  
+
+            let inline GetArray4DLength (arr: 'T[,,,]) (dim: int) =
+                match dim with
+                | 0 -> 
 
             let inline Array4DZeroCreate (n1:int) (n2:int) (n3:int) (n4:int) = (# "newarr.multi 4 !0" type ('T) n1 n2 n3 n4 : 'T[,,,] #)
 
@@ -4954,6 +4958,59 @@ namespace Microsoft.FSharp.Core
                 let len3 = (finish3 - start3 + 1)
                 GetArray3DSub source start1 start2 start3 len1 len2 len3
 
+            let inline GetArraySlice3DFixedSingle (source: _[,,]) start1 finish1 start2 finish2 index nonFixedDim1 nonFixedDim2 =
+                let bound1 = source.GetLowerBound(nonFixedDim1)
+                let bound2 = source.GetLowerBound(nonFixedDim2)
+                let start1, finish1 = ComputeSlice bound1 start1 finish1 (GetArray3DLength source nonFixedDim1)              
+                let start2, finish2 = ComputeSlice bound2 start2 finish2 (GetArray3DLength source nonFixedDim2)              
+                let len1 = (finish1 - start1 + 1)
+                let len2 = (finish2 - start2 + 1)
+
+                let dst = Array2DZeroCreate (max 0 len1) (max 0 len2)
+                let getArrayElem = 
+                    match nonFixedDim1, nonFixedDim2 with
+                    | 1, 2 -> (fun i j -> GetArray3D source index (start1 + i) (start2 + j))
+                    | 0, 2 -> (fun i j -> GetArray3D source (start1 + i) index (start2 + j))
+                    | 0, 1 -> (fun i j -> GetArray3D source (start1 + i) (start2 + j) index)
+                    | _ -> raise (System.IndexOutOfRangeException())
+
+                for i = 0 to len1 - 1 do
+                    for j = 0 to len2 - 1 do
+                        SetArray2D dst i j (getArrayElem i j)
+
+                dst
+
+            let inline GetArraySlice3DFixedSingle1 (source: _[,,]) index1 start2 finish2 start3 finish3 = GetArraySlice3DFixedSingle source start2 finish2 start3 finish3 index1 1 2
+
+            let inline GetArraySlice3DFixedSingle2 (source: _[,,]) start1 finish1 index2 start3 finish3 = GetArraySlice3DFixedSingle source start1 finish1 start3 finish3 index2 0 2
+
+            let inline GetArraySlice3DFixedSingle3 (source: _[,,]) start1 finish1 start2 finish2 index3 = GetArraySlice3DFixedSingle source start1 finish1 start2 finish2 index3 0 1
+
+            let inline GetArraySlice3DFixedDouble (source: _[,,]) start finish index1 index2 nonFixedDim = 
+                let bound = source.GetLowerBound(nonFixedDim)
+                let start, finish = ComputeSlice bound start finish (GetArray3DLength source nonFixedDim)
+                let len = (finish - start + 1)
+                let dst = zeroCreate (if len < 0 then 0 else len)
+                let getArrayElem = 
+                    match nonFixedDim with
+                    | 2 -> (fun i -> GetArray3D source index1 index2 i)
+                    | 1 -> (fun i -> GetArray3D source index1 (start + i) index2)
+                    | 0 -> (fun i -> GetArray3D source (start+i) index1 index2)
+                    | _ -> raise (System.IndexOutOfRangeException())
+                for j = 0 to len - 1 do 
+                    SetArray dst j (getArrayElem j)
+                dst
+
+            let inline GetArraySlice3DFixedDouble1 (source: _[,,]) index1 index2 start3 finish3 = GetArraySlice3DFixedDouble source start3 finish3 index1 index2 2
+
+            let inline GetArraySlice3DFixedDouble2 (source: _[,,]) index1 start2 finish2 index3 = GetArraySlice3DFixedDouble source start2 finish2 index1 index3 1
+
+            let inline GetArraySlice3DFixedDouble3 (source: _[,,]) start1 finish1 index2 index3  = GetArraySlice3DFixedDouble source start1 finish1 index2 index3 0
+
+            let inline GetArraySlice4DFixedSingle (source: _[,,,]) start1 finish1 start2 finish2 start3 finish3 index nonFixedDim = 
+                let bound = source.GetLowerBound(nonFixedDim)
+                let start, finish = ComputeSlice bound start finish (GetArray3DLength source nonFixedDim)
+
             let SetArraySlice3D (target: _[,,]) start1 finish1 start2 finish2 start3 finish3 (source:_[,,]) = 
                 let bound1 = target.GetLowerBound(0)
                 let bound2 = target.GetLowerBound(1)
@@ -4965,6 +5022,52 @@ namespace Microsoft.FSharp.Core
                 let finish2 = (match finish2 with None -> bound2 + GetArray3DLength2 target - 1 | Some n -> n) 
                 let finish3 = (match finish3 with None -> bound3 + GetArray3DLength3 target - 1 | Some n -> n) 
                 SetArray3DSub target start1 start2 start3 (finish1 - start1 + 1) (finish2 - start2 + 1) (finish3 - start3 + 1) source
+
+            let inline SetArraySlice3DFixedSingle (target: _[,,]) (source: _[,]) index start1 finish1 start2 finish2 nonFixedDim1 nonFixedDim2  = 
+                let bound1 = target.GetLowerBound(nonFixedDim1)
+                let bound2 = target.GetLowerBound(nonFixedDim2)
+                let start1, finish1 = ComputeSlice bound1 start1 finish1 (GetArray3DLength target nonFixedDim1)              
+                let start2, finish2 = ComputeSlice bound2 start2 finish2 (GetArray3DLength target nonFixedDim2)              
+                let len1 = (finish1 - start1 + 1)
+                let len2 = (finish2 - start2 + 1)
+                let setArrayElem = 
+                    match nonFixedDim1, nonFixedDim2 with
+                    | 1, 2 -> (fun i j -> SetArray3D target index (bound1 + start1 + i) (bound2 + start2 + j) (GetArray2D source i j)) 
+                    | 0, 2 -> (fun i j -> SetArray3D target (bound1 + start1 + i) index (bound2+ start2 + j) (GetArray2D source i j))
+                    | 0, 1 -> (fun i j -> SetArray3D target (bound1 + start1 + i) (bound2+ start2 + j) index (GetArray2D source i j))
+                    | _ -> raise (System.IndexOutOfRangeException())
+
+                for i = 0 to len1 - 1 do
+                    for j = 0 to len2 - 1 do
+                        setArrayElem i j
+
+            let inline SetArraySlice3DFixedSingle1 (target: _[,,]) index start2 finish2 start3 finish3 (source: _[,]) = 
+                SetArraySlice3DFixedSingle target source index start2 finish2 start3 finish3 1 2
+
+            let inline SetArraySlice3DFixedSingle2 (target: _[,,]) start1 finish1 index start3 finish3 (source: _[,]) = 
+                SetArraySlice3DFixedSingle target source index start1 finish1 start3 finish3 0 2
+
+            let inline SetArraySlice3DFixedSingle3 (target: _[,,]) start1 finish1 start2 finish2 index (source: _[,]) = 
+                SetArraySlice3DFixedSingle target source index start1 finish1 start2 finish2 0 1
+
+            let inline SetArraySlice3DFixedDouble (target: _[,,]) (source: _[]) index1 index2 start finish nonFixedDim = 
+                let bound = target.GetLowerBound(nonFixedDim)
+                let start, finish = ComputeSlice bound start finish (GetArray3DLength target nonFixedDim)
+                let len = (finish - start + 1)
+                let setArrayElem = 
+                    match nonFixedDim with
+                    | 2 -> (fun k -> SetArray3D target index1 index2 (bound + start + k) (GetArray source k)) 
+                    | 1 -> (fun j -> SetArray3D target index1 (bound + start + j) index2 (GetArray source j)) 
+                    | 0 -> (fun i -> SetArray3D target (bound + start + i) index1 index2 (GetArray source i))
+                    | _ -> raise (System.IndexOutOfRangeException())
+                for j = 0 to len - 1 do 
+                    setArrayElem j
+
+            let inline SetArraySlice3DFixedDouble1 (target: _[,,]) index1 index2 start3 finish3 (source: _[]) = SetArraySlice3DFixedDouble target source index1 index2 start3 finish3 2
+
+            let inline SetArraySlice3DFixedDouble2 (target: _[,,]) index1 start2 finish2 index3 (source: _[]) = SetArraySlice3DFixedDouble target source index1 index3 start2 finish2 1
+
+            let inline SetArraySlice3DFixedDouble3 (target: _[,,]) start1GetArray4DLength12 index3 (source: _[]) = SetArraySlice3DFixedDouble target source index2 index3 start1 finish1 0
 
             let GetArraySlice4D (source: _[,,,]) start1 finish1 start2 finish2 start3 finish3 start4 finish4 = 
                 let bound1 = source.GetLowerBound(0)
@@ -4983,7 +5086,7 @@ namespace Microsoft.FSharp.Core
 
             let SetArraySlice4D (target: _[,,,]) start1 finish1 start2 finish2 start3 finish3 start4 finish4 (source:_[,,,]) = 
                 let bound1 = target.GetLowerBound(0)
-                let bound2 = target.GetLowerBound(1)
+              GetArray4DLength1 target.GetLowerBound(1)
                 let bound3 = target.GetLowerBound(2)
                 let bound4 = target.GetLowerBound(3)
                 let start1  = (match start1 with None -> bound1 | Some n -> n) 
