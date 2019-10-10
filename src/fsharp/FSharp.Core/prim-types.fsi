@@ -2787,7 +2787,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start2">The start index of the second dimension.</param>
             /// <param name="finish2">The end index of the second dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice2D : target:'T[,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> source:'T[,] -> unit
+            val inline SetArraySlice2D : target:'T[,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> source:'T[,] -> unit
 
             /// <summary>Sets a vector slice of a 2D array. The index of the first dimension is fixed.</summary>
             /// <param name="target">The target array.</param>
@@ -2814,7 +2814,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start3">The start index of the third dimension.</param>
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <returns>The three dimensional sub array from the given indices.</returns>
-            val GetArraySlice3D : source:'T[,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> start3:int option -> finish3:int option -> 'T[,,]
+            val inline GetArraySlice3D : source:'T[,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> start3:int option -> finish3:int option -> 'T[,,]
 
             /// <summary>Sets a slice of an array</summary>
             /// <param name="target">The target array.</param>
@@ -2825,7 +2825,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start3">The start index of the third dimension.</param>
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice3D : target:'T[,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> start3:int option -> finish3:int option -> source:'T[,,] -> unit
+            val inline SetArraySlice3D : target:'T[,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> start3:int option -> finish3:int option -> source:'T[,,] -> unit
 
             /// <summary>Gets a slice of an array</summary>
             /// <param name="source">The source array.</param>

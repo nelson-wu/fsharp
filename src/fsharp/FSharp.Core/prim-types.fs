@@ -4941,7 +4941,7 @@ namespace Microsoft.FSharp.Core
                 for i = 0 to len1 - 1 do
                     SetArray2D target (bound1+start1+i) index2 (GetArray source i)
 
-            let SetArraySlice2D (target: _[,]) start1 finish1 start2 finish2 (source: _[,]) = 
+            let inline SetArraySlice2D (target: _[,]) start1 finish1 start2 finish2 (source: _[,]) = 
                 let bound1 = target.GetLowerBound(0)
                 let bound2 = target.GetLowerBound(1)
                 let start1  = (match start1 with None -> bound1 | Some n -> n) 
@@ -4950,7 +4950,7 @@ namespace Microsoft.FSharp.Core
                 let finish2 = (match finish2 with None -> bound2 + GetArray2DLength2 target - 1 | Some n -> n) 
                 SetArray2DSub target start1 start2 (finish1 - start1 + 1) (finish2 - start2 + 1) source
 
-            let GetArraySlice3D (source: _[,,]) start1 finish1 start2 finish2 start3 finish3 =
+            let inline GetArraySlice3D (source: _[,,]) start1 finish1 start2 finish2 start3 finish3 =
                 let bound1 = source.GetLowerBound(0)
                 let bound2 = source.GetLowerBound(1)
                 let bound3 = source.GetLowerBound(2)
@@ -5005,14 +5005,16 @@ namespace Microsoft.FSharp.Core
                     SetArray dst j (getArrayElem j)
                 dst
 
-            let inline GetArraySlice3DFixedDouble1 (source: _[,,]) index1 index2 start3 finish3 = GetArraySlice3DFixedDouble source start3 finish3 index1 index2 2
+            let inline GetArraySlice3DFixedDouble1 (source: _[,,]) index1 index2 start3 finish3 = 
+                GetArraySlice3DFixedDouble source start3 finish3 index1 index2 2
 
-            let inline GetArraySlice3DFixedDouble2 (source: _[,,]) index1 start2 finish2 index3 = GetArraySlice3DFixedDouble source start2 finish2 index1 index3 1
+            let inline GetArraySlice3DFixedDouble2 (source: _[,,]) index1 start2 finish2 index3 = 
+                GetArraySlice3DFixedDouble source start2 finish2 index1 index3 1
 
-            let inline GetArraySlice3DFixedDouble3 (source: _[,,]) start1 finish1 index2 index3  = GetArraySlice3DFixedDouble source start1 finish1 index2 index3 0
-
+            let inline GetArraySlice3DFixedDouble3 (source: _[,,]) start1 finish1 index2 index3 = 
+                GetArraySlice3DFixedDouble source start1 finish1 index2 index3 0
            
-            let SetArraySlice3D (target: _[,,]) start1 finish1 start2 finish2 start3 finish3 (source:_[,,]) = 
+            let inline SetArraySlice3D (target: _[,,]) start1 finish1 start2 finish2 start3 finish3 (source:_[,,]) = 
                 let bound1 = target.GetLowerBound(0)
                 let bound2 = target.GetLowerBound(1)
                 let bound3 = target.GetLowerBound(2)
@@ -5064,11 +5066,14 @@ namespace Microsoft.FSharp.Core
                 for j = 0 to len - 1 do 
                     setArrayElem j
 
-            let inline SetArraySlice3DFixedDouble1 (target: _[,,]) index1 index2 start3 finish3 (source: _[]) = SetArraySlice3DFixedDouble target source index1 index2 start3 finish3 2
+            let inline SetArraySlice3DFixedDouble1 (target: _[,,]) index1 index2 start3 finish3 (source: _[]) = 
+                SetArraySlice3DFixedDouble target source index1 index2 start3 finish3 2
 
-            let inline SetArraySlice3DFixedDouble2 (target: _[,,]) index1 start2 finish2 index3 (source: _[]) = SetArraySlice3DFixedDouble target source index1 index3 start2 finish2 1
+            let inline SetArraySlice3DFixedDouble2 (target: _[,,]) index1 start2 finish2 index3 (source: _[]) = 
+                SetArraySlice3DFixedDouble target source index1 index3 start2 finish2 1
 
-            let inline SetArraySlice3DFixedDouble3 (target: _[,,]) start1 finish1 index2 index3 (source: _[]) = SetArraySlice3DFixedDouble target source index2 index3 start1 finish1 0
+            let inline SetArraySlice3DFixedDouble3 (target: _[,,]) start1 finish1 index2 index3 (source: _[]) = 
+                SetArraySlice3DFixedDouble target source index2 index3 start1 finish1 0
 
             let inline GetArraySlice4D (source: _[,,,]) start1 finish1 start2 finish2 start3 finish3 start4 finish4 = 
                 let bound1 = source.GetLowerBound(0)
@@ -5111,10 +5116,17 @@ namespace Microsoft.FSharp.Core
 
                 dst
 
-            let inline GetArraySlice4DFixedSingle1 (source: _[,,,]) index1 start2 finish2 start3 finish3 start4 finish4 = GetArraySlice4DFixedSingle source start2 finish2 start3 finish3 start4 finish4 index1 1 2 3
-            let inline GetArraySlice4DFixedSingle2 (source: _[,,,]) start1 finish1 index2 start3 finish3 start4 finish4 = GetArraySlice4DFixedSingle source start1 finish1 start3 finish3 start4 finish4 index2 0 2 3
-            let inline GetArraySlice4DFixedSingle3 (source: _[,,,]) start1 finish1 start2 finish2 index3 start4 finish4 = GetArraySlice4DFixedSingle source start1 finish1 start2 finish2 start4 finish4 index3 0 1 3
-            let inline GetArraySlice4DFixedSingle4 (source: _[,,,]) start1 finish1 start2 finish2 start3 finish3 index4 = GetArraySlice4DFixedSingle source start1 finish1 start2 finish2 start3 finish3 index4 0 1 2
+            let inline GetArraySlice4DFixedSingle1 (source: _[,,,]) index1 start2 finish2 start3 finish3 start4 finish4 =
+                GetArraySlice4DFixedSingle source start2 finish2 start3 finish3 start4 finish4 index1 1 2 3
+
+            let inline GetArraySlice4DFixedSingle2 (source: _[,,,]) start1 finish1 index2 start3 finish3 start4 finish4 = 
+                GetArraySlice4DFixedSingle source start1 finish1 start3 finish3 start4 finish4 index2 0 2 3
+
+            let inline GetArraySlice4DFixedSingle3 (source: _[,,,]) start1 finish1 start2 finish2 index3 start4 finish4 = 
+                GetArraySlice4DFixedSingle source start1 finish1 start2 finish2 start4 finish4 index3 0 1 3
+
+            let inline GetArraySlice4DFixedSingle4 (source: _[,,,]) start1 finish1 start2 finish2 start3 finish3 index4 = 
+                GetArraySlice4DFixedSingle source start1 finish1 start2 finish2 start3 finish3 index4 0 1 2
 
             let inline GetArraySlice4DFixedDouble (source: _[,,,]) start1 finish1 start2 finish2 index1 index2 nonFixedDim1 nonFixedDim2 = 
                 let bound1 = source.GetLowerBound(nonFixedDim1)
@@ -5140,12 +5152,23 @@ namespace Microsoft.FSharp.Core
 
                 dst
 
-            let inline GetArraySlice4DFixedDouble1 (source: _[,,,]) index1 index2 start3 finish3 start4 finish4 = GetArraySlice4DFixedDouble source start3 finish3 start4 finish4 index1 index2 2 3
-            let inline GetArraySlice4DFixedDouble2 (source: _[,,,]) index1 start2 finish2 index3 start4 finish4 = GetArraySlice4DFixedDouble source start2 finish2 start4 finish4 index1 index3 1 3
-            let inline GetArraySlice4DFixedDouble3 (source: _[,,,]) index1 start2 finish2 start3 finish3 index4 = GetArraySlice4DFixedDouble source start2 finish2 start3 finish3 index1 index4 1 2
-            let inline GetArraySlice4DFixedDouble4 (source: _[,,,]) start1 finish1 index2 index3 start4 finish4 = GetArraySlice4DFixedDouble source start1 finish1 start4 finish4 index2 index3 0 3
-            let inline GetArraySlice4DFixedDouble5 (source: _[,,,]) start1 finish1 index2 start3 finish3 index4 = GetArraySlice4DFixedDouble source start1 finish1 start3 finish3 index2 index4 0 2
-            let inline GetArraySlice4DFixedDouble6 (source: _[,,,]) start1 finish1 start2 finish2 index3 index4 = GetArraySlice4DFixedDouble source start1 finish1 start2 finish2 index3 index4 0 1
+            let inline GetArraySlice4DFixedDouble1 (source: _[,,,]) index1 index2 start3 finish3 start4 finish4 = 
+                GetArraySlice4DFixedDouble source start3 finish3 start4 finish4 index1 index2 2 3
+
+            let inline GetArraySlice4DFixedDouble2 (source: _[,,,]) index1 start2 finish2 index3 start4 finish4 = 
+                GetArraySlice4DFixedDouble source start2 finish2 start4 finish4 index1 index3 1 3
+
+            let inline GetArraySlice4DFixedDouble3 (source: _[,,,]) index1 start2 finish2 start3 finish3 index4 = 
+                GetArraySlice4DFixedDouble source start2 finish2 start3 finish3 index1 index4 1 2
+
+            let inline GetArraySlice4DFixedDouble4 (source: _[,,,]) start1 finish1 index2 index3 start4 finish4 = 
+                GetArraySlice4DFixedDouble source start1 finish1 start4 finish4 index2 index3 0 3
+
+            let inline GetArraySlice4DFixedDouble5 (source: _[,,,]) start1 finish1 index2 start3 finish3 index4 = 
+                GetArraySlice4DFixedDouble source start1 finish1 start3 finish3 index2 index4 0 2
+
+            let inline GetArraySlice4DFixedDouble6 (source: _[,,,]) start1 finish1 start2 finish2 index3 index4 = 
+                GetArraySlice4DFixedDouble source start1 finish1 start2 finish2 index3 index4 0 1
 
             let inline GetArraySlice4DFixedTriple (source: _[,,,]) start1 finish1 index1 index2 index3 nonFixedDim1 = 
                 let bound1 = source.GetLowerBound(nonFixedDim1)
@@ -5164,10 +5187,17 @@ namespace Microsoft.FSharp.Core
 
                 dst
 
-            let inline GetArraySlice4DFixedTriple1 (source: _[,,,]) start1 finish1 index2 index3 index4 = GetArraySlice4DFixedTriple source start1 finish1 index2 index3 index4 0
-            let inline GetArraySlice4DFixedTriple2 (source: _[,,,]) index1 start2 finish2 index3 index4 = GetArraySlice4DFixedTriple source start2 finish2 index1 index3 index4 1
-            let inline GetArraySlice4DFixedTriple3 (source: _[,,,]) index1 index2 start3 finish3 index4 = GetArraySlice4DFixedTriple source start3 finish3 index1 index2 index4 2
-            let inline GetArraySlice4DFixedTriple4 (source: _[,,,]) index1 index2 index3 start4 finish4 = GetArraySlice4DFixedTriple source start4 finish4 index1 index2 index3 3
+            let inline GetArraySlice4DFixedTriple1 (source: _[,,,]) start1 finish1 index2 index3 index4 = 
+                GetArraySlice4DFixedTriple source start1 finish1 index2 index3 index4 0
+
+            let inline GetArraySlice4DFixedTriple2 (source: _[,,,]) index1 start2 finish2 index3 index4 =
+                GetArraySlice4DFixedTriple source start2 finish2 index1 index3 index4 1
+
+            let inline GetArraySlice4DFixedTriple3 (source: _[,,,]) index1 index2 start3 finish3 index4 =
+                GetArraySlice4DFixedTriple source start3 finish3 index1 index2 index4 2
+
+            let inline GetArraySlice4DFixedTriple4 (source: _[,,,]) index1 index2 index3 start4 finish4 = 
+                GetArraySlice4DFixedTriple source start4 finish4 index1 index2 index3 3
 
             let inline SetArraySlice4D (target: _[,,,]) start1 finish1 start2 finish2 start3 finish3 start4 finish4 (source:_[,,,]) = 
                 let bound1 = target.GetLowerBound(0)
@@ -5208,10 +5238,17 @@ namespace Microsoft.FSharp.Core
                         for k = 0 to len3 - 1 do
                             setArrayElem i j k
             
-            let inline SetArraySlice4DFixedSingle1 (target: _[,,,]) index1 start2 finish2 start3 finish3 start4 finish4 (source: _[,,]) = SetArraySlice4DFixedSingle target source index1 start2 finish2 start3 finish3 start4 finish4  1 2 3
-            let inline SetArraySlice4DFixedSingle2 (target: _[,,,]) start1 finish1 index2 start3 finish3 start4 finish4 (source: _[,,]) = SetArraySlice4DFixedSingle target source index2 start1 finish1 start3 finish3 start4 finish4  0 2 3
-            let inline SetArraySlice4DFixedSingle3 (target: _[,,,]) start1 finish1 start2 finish2 index3 start4 finish4 (source: _[,,]) = SetArraySlice4DFixedSingle target source index3 start1 finish1 start2 finish2 start4 finish4  0 1 3
-            let inline SetArraySlice4DFixedSingle4 (target: _[,,,]) start1 finish1 start2 finish2 start3 finish3 index4 (source: _[,,]) = SetArraySlice4DFixedSingle target source index4 start1 finish1 start2 finish2 start3 finish3  0 1 2
+            let inline SetArraySlice4DFixedSingle1 (target: _[,,,]) index1 start2 finish2 start3 finish3 start4 finish4 (source: _[,,]) = 
+                SetArraySlice4DFixedSingle target source index1 start2 finish2 start3 finish3 start4 finish4 1 2 3
+
+            let inline SetArraySlice4DFixedSingle2 (target: _[,,,]) start1 finish1 index2 start3 finish3 start4 finish4 (source: _[,,]) = 
+                SetArraySlice4DFixedSingle target source index2 start1 finish1 start3 finish3 start4 finish4 0 2 3
+
+            let inline SetArraySlice4DFixedSingle3 (target: _[,,,]) start1 finish1 start2 finish2 index3 start4 finish4 (source: _[,,]) = 
+                SetArraySlice4DFixedSingle target source index3 start1 finish1 start2 finish2 start4 finish4 0 1 3
+
+            let inline SetArraySlice4DFixedSingle4 (target: _[,,,]) start1 finish1 start2 finish2 start3 finish3 index4 (source: _[,,]) = 
+                SetArraySlice4DFixedSingle target source index4 start1 finish1 start2 finish2 start3 finish3 0 1 2
 
             let inline SetArraySlice4DFixedDouble (target: _[,,,]) (source: _[,]) index1 index2 start1 finish1 start2 finish2 nonFixedDim1 nonFixedDim2 = 
                 let bound1 = target.GetLowerBound(nonFixedDim1)
@@ -5235,12 +5272,23 @@ namespace Microsoft.FSharp.Core
                     for j = 0 to len2 - 1 do
                         setArrayElem i j 
 
-            let inline SetArraySlice4DFixedDouble1 (target: _[,,,]) index1 index2 start3 finish3 start4 finish4 (source: _[,]) = SetArraySlice4DFixedDouble target source index1 index2 start3 finish3 start4 finish4  2 3
-            let inline SetArraySlice4DFixedDouble2 (target: _[,,,]) index1 start2 finish2 index3 start4 finish4 (source: _[,]) = SetArraySlice4DFixedDouble target source index1 index3 start2 finish2 start4 finish4 1 3
-            let inline SetArraySlice4DFixedDouble3 (target: _[,,,]) index1 start2 finish2 start3 finish3 index4 (source: _[,]) = SetArraySlice4DFixedDouble target source index1 index4 start2 finish2 start3 finish3 1 2
-            let inline SetArraySlice4DFixedDouble4 (target: _[,,,]) start1 finish1 index2 index3 start4 finish4 (source: _[,]) = SetArraySlice4DFixedDouble target source index2 index3 start1 finish1 start4 finish4 0 3
-            let inline SetArraySlice4DFixedDouble5 (target: _[,,,]) start1 finish1 index2 start3 finish3 index4 (source: _[,]) = SetArraySlice4DFixedDouble target source index2 index4 start1 finish1 start3 finish3 0 2
-            let inline SetArraySlice4DFixedDouble6 (target: _[,,,]) start1 finish1 start2 finish2 index3 index4 (source: _[,]) = SetArraySlice4DFixedDouble target source index3 index4 start1 finish1 start2 finish2 0 1
+            let inline SetArraySlice4DFixedDouble1 (target: _[,,,]) index1 index2 start3 finish3 start4 finish4 (source: _[,]) =
+                SetArraySlice4DFixedDouble target source index1 index2 start3 finish3 start4 finish4  2 3
+
+            let inline SetArraySlice4DFixedDouble2 (target: _[,,,]) index1 start2 finish2 index3 start4 finish4 (source: _[,]) =
+                SetArraySlice4DFixedDouble target source index1 index3 start2 finish2 start4 finish4 1 3
+
+            let inline SetArraySlice4DFixedDouble3 (target: _[,,,]) index1 start2 finish2 start3 finish3 index4 (source: _[,]) = 
+                SetArraySlice4DFixedDouble target source index1 index4 start2 finish2 start3 finish3 1 2
+
+            let inline SetArraySlice4DFixedDouble4 (target: _[,,,]) start1 finish1 index2 index3 start4 finish4 (source: _[,]) =
+                SetArraySlice4DFixedDouble target source index2 index3 start1 finish1 start4 finish4 0 3
+
+            let inline SetArraySlice4DFixedDouble5 (target: _[,,,]) start1 finish1 index2 start3 finish3 index4 (source: _[,]) =
+                SetArraySlice4DFixedDouble target source index2 index4 start1 finish1 start3 finish3 0 2
+
+            let inline SetArraySlice4DFixedDouble6 (target: _[,,,]) start1 finish1 start2 finish2 index3 index4 (source: _[,]) =
+                SetArraySlice4DFixedDouble target source index3 index4 start1 finish1 start2 finish2 0 1
 
             let inline SetArraySlice4DFixedTriple (target: _[,,,]) (source: _[]) index1 index2 index3 start1 finish1 nonFixedDim1 = 
                 let bound1 = target.GetLowerBound(nonFixedDim1)
@@ -5256,10 +5304,17 @@ namespace Microsoft.FSharp.Core
                 for i = 0 to len1 - 1 do
                     setArrayElem i
 
-            let inline SetArraySlice4DFixedTriple1 (target: _[,,,]) start1 finish1 index2 index3 index4 (source: _[]) = SetArraySlice4DFixedTriple target source index2 index3 index4 start1 finish1 0
-            let inline SetArraySlice4DFixedTriple2 (target: _[,,,]) index1 start2 finish2 index3 index4 (source: _[]) = SetArraySlice4DFixedTriple target source index1 index3 index4 start2 finish2 1
-            let inline SetArraySlice4DFixedTriple3 (target: _[,,,]) index1 index2 start3 finish3 index4 (source: _[]) = SetArraySlice4DFixedTriple target source index1 index2 index4 start3 finish3 2
-            let inline SetArraySlice4DFixedTriple4 (target: _[,,,]) index1 index2 index3 start4 finish4 (source: _[]) = SetArraySlice4DFixedTriple target source index1 index2 index3 start4 finish4 3
+            let inline SetArraySlice4DFixedTriple1 (target: _[,,,]) start1 finish1 index2 index3 index4 (source: _[]) = 
+                SetArraySlice4DFixedTriple target source index2 index3 index4 start1 finish1 0
+
+            let inline SetArraySlice4DFixedTriple2 (target: _[,,,]) index1 start2 finish2 index3 index4 (source: _[]) = 
+                SetArraySlice4DFixedTriple target source index1 index3 index4 start2 finish2 1
+
+            let inline SetArraySlice4DFixedTriple3 (target: _[,,,]) index1 index2 start3 finish3 index4 (source: _[]) =
+                SetArraySlice4DFixedTriple target source index1 index2 index4 start3 finish3 2
+
+            let inline SetArraySlice4DFixedTriple4 (target: _[,,,]) index1 index2 index3 start4 finish4 (source: _[]) =
+                SetArraySlice4DFixedTriple target source index1 index2 index3 start4 finish4 3
 
             let inline GetStringSlice (source: string) start finish =
                 let start, finish = ComputeSlice 0 start finish source.Length
