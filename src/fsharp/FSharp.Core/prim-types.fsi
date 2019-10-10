@@ -2838,7 +2838,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <returns>The four dimensional sub array from the given indices.</returns>
-            val GetArraySlice4D : source:'T[,,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,,,]
+            val inline GetArraySlice4D : source:'T[,,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,,,]
 
             /// <summary>Gets a 3D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2850,7 +2850,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <returns>The three dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedSingle1 : source:'T[,,,] -> start1:int option -> index1:int -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,,]
+            val inline GetArraySlice4DFixedSingle1 : source:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,,]
 
             /// <summary>Gets a 3D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2862,7 +2862,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <returns>The three dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedSingle2 : source:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,,]
+            val inline GetArraySlice4DFixedSingle2 : source:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,,]
 
             /// <summary>Gets a 3D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2874,7 +2874,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <returns>The three dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedSingle3 : source:'T[,,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> index3:int  -> start4:int option -> finish4:int option -> 'T[,,]
+            val inline GetArraySlice4DFixedSingle3 : source:'T[,,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> index3:int  -> start4:int option -> finish4:int option -> 'T[,,]
 
             /// <summary>Gets a 3D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2886,7 +2886,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <returns>The three dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedSingle4 : source:'T[,,,] -> start1:int option -> finish1:int option -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> index4:int -> 'T[,,]
+            val inline GetArraySlice4DFixedSingle4 : source:'T[,,,] -> start1:int option -> finish1:int option -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> index4:int -> 'T[,,]
 
             /// <summary>Gets a 2D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2897,7 +2897,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <returns>The two dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedDouble1 : source:'T[,,,] -> index1: int -> index2:int -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,]
+            val inline GetArraySlice4DFixedDouble1 : source:'T[,,,] -> index1: int -> index2:int -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,]
 
             /// <summary>Gets a 2D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2908,7 +2908,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <returns>The two dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedDouble2 : source:'T[,,,] -> index1: int -> start2: int option -> finish2:int option -> index3:int -> start4:int option -> finish4:int option -> 'T[,]
+            val inline GetArraySlice4DFixedDouble2 : source:'T[,,,] -> index1: int -> start2: int option -> finish2:int option -> index3:int -> start4:int option -> finish4:int option -> 'T[,]
 
             /// <summary>Gets a 2D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2919,7 +2919,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <returns>The two dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedDouble3 : source:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> index4:int -> 'T[,]
+            val inline GetArraySlice4DFixedDouble3 : source:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> index4:int -> 'T[,]
 
             /// <summary>Gets a 2D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2930,7 +2930,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <returns>The two dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedDouble4 : source:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> index3:int -> start4:int option -> finish4:int option -> 'T[,]
+            val inline GetArraySlice4DFixedDouble4 : source:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> index3:int -> start4:int option -> finish4:int option -> 'T[,]
 
             /// <summary>Gets a 2D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2941,7 +2941,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <returns>The two dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedDouble5 : source:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> start3:int option -> finish3:int option -> index4:int -> 'T[,]
+            val inline GetArraySlice4DFixedDouble5 : source:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> start3:int option -> finish3:int option -> index4:int -> 'T[,]
 
             /// <summary>Gets a 2D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2952,7 +2952,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="index3">The fixed index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <returns>The two dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedDouble6 : source:'T[,,,] -> start1:int option -> finish1:int option -> start2: int option -> finish2:int option -> index3:int -> index4:int -> 'T[,]
+            val inline GetArraySlice4DFixedDouble6 : source:'T[,,,] -> start1:int option -> finish1:int option -> start2: int option -> finish2:int option -> index3:int -> index4:int -> 'T[,]
 
             /// <summary>Gets a 1D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2962,7 +2962,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <returns>The one dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedTriple1 : source:'T[,,,] -> index1:int -> index2:int -> index3:int -> start4:int option -> finish4:int option -> 'T[]
+            val inline GetArraySlice4DFixedTriple4 : source:'T[,,,] -> index1:int -> index2:int -> index3:int -> start4:int option -> finish4:int option -> 'T[]
 
             /// <summary>Gets a 1D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2972,7 +2972,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <returns>The one dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedTriple2 : source:'T[,,,] -> index1:int -> index2:int -> start3:int option -> finish3:int option -> index4:int -> 'T[]
+            val inline GetArraySlice4DFixedTriple3 : source:'T[,,,] -> index1:int -> index2:int -> start3:int option -> finish3:int option -> index4:int -> 'T[]
             
             /// <summary>Gets a 1D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2982,7 +2982,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="index3">The fixed index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <returns>The one dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedTriple3 : source:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> index3:int -> index4:int -> 'T[]
+            val inline GetArraySlice4DFixedTriple2 : source:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> index3:int -> index4:int -> 'T[]
 
             /// <summary>Gets a 1D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -2992,7 +2992,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="index3">The fixed index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <returns>The one dimensional sub array from the given indices.</returns>
-            val GetArraySlice4DFixedTriple4 : source:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> index3:int -> index4:int -> 'T[]
+            val inline GetArraySlice4DFixedTriple1 : source:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> index3:int -> index4:int -> 'T[]
             
             /// <summary>Gets a 3D slice of a 4D array</summary>
             /// <param name="source">The source array.</param>
@@ -3004,7 +3004,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedSingle1 : target:'T[,,,] -> start1:int option -> index1:int -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,,]
+            val inline SetArraySlice4DFixedSingle1 : target:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> source: 'T[,,] -> unit
 
             /// <summary>Sets a 3D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3016,7 +3016,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedSingle2 : target:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,,]
+            val inline SetArraySlice4DFixedSingle2 : target:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> source: 'T[,,] -> unit
 
             /// <summary>Sets a 3D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3028,7 +3028,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedSingle3 : target:'T[,,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> index3:int  -> start4:int option -> finish4:int option -> 'T[,,]
+            val inline SetArraySlice4DFixedSingle3 : target:'T[,,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> index3:int  -> start4:int option -> finish4:int option -> source: 'T[,,] -> unit
 
             /// <summary>Sets a 3D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3040,7 +3040,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedSingle4 : target:'T[,,,] -> start1:int option -> finish1:int option -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> index4:int -> 'T[,,]
+            val inline SetArraySlice4DFixedSingle4 : target:'T[,,,] -> start1:int option -> finish1:int option -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> index4:int -> source: 'T[,,] -> unit
 
             /// <summary>Sets a 2D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3051,7 +3051,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedDouble1 : target:'T[,,,] -> index1: int -> index2:int -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> 'T[,]
+            val inline SetArraySlice4DFixedDouble1 : target:'T[,,,] -> index1: int -> index2:int -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> source: 'T[,] -> unit
 
             /// <summary>Sets a 2D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3062,7 +3062,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedDouble2 : target:'T[,,,] -> index1: int -> start2: int option -> finish2:int option -> index3:int -> start4:int option -> finish4:int option -> 'T[,]
+            val inline SetArraySlice4DFixedDouble2 : target:'T[,,,] -> index1: int -> start2: int option -> finish2:int option -> index3:int -> start4:int option -> finish4:int option -> source: 'T[,] -> unit
 
             /// <summary>Sets a 2D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3073,7 +3073,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedDouble3 : target:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> index4:int -> 'T[,]
+            val inline SetArraySlice4DFixedDouble3 : target:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> start3:int option -> finish3:int option -> index4:int -> source: 'T[,] -> unit
 
             /// <summary>Sets a 2D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3084,7 +3084,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedDouble4 : target:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> index3:int -> start4:int option -> finish4:int option -> 'T[,]
+            val inline SetArraySlice4DFixedDouble4 : target:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> index3:int -> start4:int option -> finish4:int option -> source: 'T[,] -> unit
 
             /// <summary>Sets a 2D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3095,7 +3095,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedDouble5 : target:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> start3:int option -> finish3:int option -> index4:int -> 'T[,]
+            val inline SetArraySlice4DFixedDouble5 : target:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> start3:int option -> finish3:int option -> index4:int -> source: 'T[,] -> unit
 
             /// <summary>Sets a 2D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3106,7 +3106,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="index3">The fixed index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedDouble6 : target:'T[,,,] -> start1:int option -> finish1:int option -> start2: int option -> finish2:int option -> index3:int -> index4:int -> 'T[,]
+            val inline SetArraySlice4DFixedDouble6 : target:'T[,,,] -> start1:int option -> finish1:int option -> start2: int option -> finish2:int option -> index3:int -> index4:int -> source: 'T[,] -> unit
 
             /// <summary>Sets a 1D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3116,7 +3116,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedTriple1 : target:'T[,,,] -> index1:int -> index2:int -> index3:int -> start4:int option -> finish4:int option -> 'T[]
+            val inline SetArraySlice4DFixedTriple4 : target:'T[,,,] -> index1:int -> index2:int -> index3:int -> start4:int option -> finish4:int option -> source: 'T[] -> unit
 
             /// <summary>Sets a 1D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3126,7 +3126,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="finish3">The end index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedTriple2 : target:'T[,,,] -> index1:int -> index2:int -> start3:int option -> finish3:int option -> index4:int -> 'T[]
+            val inline SetArraySlice4DFixedTriple3 : target:'T[,,,] -> index1:int -> index2:int -> start3:int option -> finish3:int option -> index4:int -> source: 'T[] -> unit
             
             /// <summary>Sets a 1D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3136,7 +3136,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="index3">The fixed index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedTriple3 : target:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> index3:int -> index4:int -> 'T[]
+            val inline SetArraySlice4DFixedTriple2 : target:'T[,,,] -> index1:int -> start2: int option -> finish2:int option -> index3:int -> index4:int -> source: 'T[] -> unit
 
             /// <summary>Sets a 1D slice of a 4D array</summary>
             /// <param name="target">The target array.</param>
@@ -3146,7 +3146,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="index3">The fixed index of the third dimension.</param>
             /// <param name="index4">The fixed index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4DFixedTriple4 : target:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> index3:int -> index4:int -> 'T[]
+            val inline SetArraySlice4DFixedTriple1 : target:'T[,,,] -> start1:int option -> finish1:int option -> index2:int -> index3:int -> index4:int -> source: 'T[] -> unit
 
             /// <summary>Sets a slice of an array</summary>
             /// <param name="target">The target array.</param>
@@ -3159,7 +3159,7 @@ namespace Microsoft.FSharp.Core
             /// <param name="start4">The start index of the fourth dimension.</param>
             /// <param name="finish4">The end index of the fourth dimension.</param>
             /// <param name="source">The source array.</param>
-            val SetArraySlice4D : target:'T[,,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> source:'T[,,,] -> unit
+            val inline SetArraySlice4D : target:'T[,,,] -> start1:int option -> finish1:int option -> start2:int option -> finish2:int option -> start3:int option -> finish3:int option -> start4:int option -> finish4:int option -> source:'T[,,,] -> unit
 
             /// <summary>Gets a slice from a string</summary>
             /// <param name="source">The source string.</param>

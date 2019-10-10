@@ -350,7 +350,7 @@ type Array4Module() =
         |]
         m1.[0,0,*,*] <- newSlice
         Assert.AreEqual(m1.[1,1,0,0], 109.0)
-        Assert.AreEqual(m1.[0,0,*,*], newSlice)
+        if m1.[0,0,*,*] <> newSlice then Assert.Fail()
 
     [<Test>]
     member this.SlicingDoubleFixed2() = 
@@ -372,8 +372,8 @@ type Array4Module() =
             [|0.;0.;0.;0.;0.;0.|]
         |]
         m1.[0,*,0,*] <- newSlice
-        Assert.AreEqual(m1.[1,0,1,0], 2.0)
-        Assert.AreEqual(m1.[0,*,0,*], newSlice)
+        Assert.AreEqual(m1.[1,0,1,0], 119.0)
+        if m1.[0,*,0,*] <> newSlice then Assert.Fail()
 
     [<Test>]
     member this.SlicingDoubleFixed3() = 
@@ -396,7 +396,7 @@ type Array4Module() =
         |]
         m1.[0,*,*,0] <- newSlice
         Assert.AreEqual(m1.[1,0,0,1], 29.0)
-        Assert.AreEqual(m1.[0,*,*,0], newSlice)
+        if m1.[0,*,*,0] <> newSlice then Assert.Fail()
 
     [<Test>]
     member this.SlicingDoubleFixed4() = 
@@ -420,7 +420,7 @@ type Array4Module() =
 
         m1.[*,0,0,*] <- newSlice
         Assert.AreEqual(m1.[0,1,0,0], 10.0)
-        Assert.AreEqual(m1.[*,0,0,*], newSlice)
+        if m1.[*,0,0,*] <> newSlice then Assert.Fail()
 
 
     [<Test>]
@@ -445,7 +445,7 @@ type Array4Module() =
 
         m1.[*,0,*,0] <- newSlice
         Assert.AreEqual(m1.[0,1,0,1], 20.0)
-        Assert.AreEqual(m1.[*,0,*,0], newSlice)
+        if m1.[*,0,*,0] <> newSlice then Assert.Fail()
 
     [<Test>]
     member this.SlicingDoubleFixed6() = 
@@ -469,7 +469,7 @@ type Array4Module() =
 
         m1.[*,*,0,0] <- newSlice
         Assert.AreEqual(m1.[0,0,1,1], 21.0)
-        Assert.AreEqual(m1.[*,*,0,0], newSlice)
+        if m1.[*,*,0,0] <> newSlice then Assert.Fail()
     
     [<Test>]
     member this.SlicingSingleFixed1() = 
@@ -495,7 +495,7 @@ type Array4Module() =
 
         m1.[*,*,*,0] <- newSlice
         Assert.AreEqual(m1.[0,0,0,1], 2.0)
-        Assert.AreEqual(m1.[*,*,*,0], newSlice)
+        if m1.[*,*,*,0] <> newSlice then Assert.Fail()
 
     [<Test>]
     member this.SlicingSingleFixed2() = 
@@ -522,7 +522,7 @@ type Array4Module() =
 
         m1.[*,*,0,*] <- newSlice
         Assert.AreEqual(m1.[0,0,1,0], 11.0)
-        Assert.AreEqual(m1.[*,*,0,*], newSlice)
+        if m1.[*,*,0,*] <> newSlice then Assert.Fail()
 
     [<Test>]
     member this.SlicingSingleFixed3() = 
@@ -549,7 +549,7 @@ type Array4Module() =
 
         m1.[*,0,*,*] <- newSlice
         Assert.AreEqual(m1.[0,1,0,0], 10.0)
-        Assert.AreEqual(m1.[*,0,*,*], newSlice)
+        if m1.[*,0,*,*] <> newSlice then Assert.Fail()
 
     [<Test>]
     member this.SlicingSingleFixed4() = 
@@ -576,4 +576,4 @@ type Array4Module() =
 
         m1.[0,*,*,*] <- newSlice
         Assert.AreEqual(m1.[1,0,0,0], 19.0)
-        Assert.AreEqual(m1.[0,*,*,*], newSlice)
+        if m1.[0,*,*,*] <> newSlice then Assert.Fail()
