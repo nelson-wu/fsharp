@@ -12,7 +12,7 @@ open StreamJsonRpc
 type ProtocolTests() =
 
 #if !NETCOREAPP
-    // The `netcoreapp2.1` version of `FSharp.Compiler.LanguageServer.exe` can't be run without a `publish` step so
+    // The `netcoreapp` version of `FSharp.Compiler.LanguageServer.exe` can't be run without a `publish` step so
     // we're artificially restricting this test to the full framework.
     [<Test>]
 #endif
@@ -31,21 +31,17 @@ type ProtocolTests() =
             client.StartListening()
 
             // initialize
-            let capabilities =
-                    { ClientCapabilities.workspace = None
+            let capabilities: ClientCapabilities =
+                    { workspace = None
                       textDocument = None
                       experimental = None
                       supportsVisualStudioExtensions = None }
             let! result =
-                client.InvokeAsync<InitializeResult>(
-                    "initialize", // method
-                    0, // processId
-                    "rootPath",
-                    "rootUri",
-                    null, // initializationOptions
-                    capabilities, // client capabilities
-                    "none") // trace
-                    |> Async.AwaitTask
+                client.InvokeWithParameterObjectAsync<InitializeResult>(
+                    "initialize",
+                    {| processId = Process.GetCurrentProcess().Id
+                       capabilities = capabilities |}
+                    ) |> Async.AwaitTask
             Assert.True(result.capabilities.hoverProvider)
             do! client.NotifyAsync("initialized") |> Async.AwaitTask
 

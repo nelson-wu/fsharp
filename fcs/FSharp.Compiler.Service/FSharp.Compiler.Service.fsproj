@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<!-- Copyright (c) Microsoft Corporation.  All Rights Reserved.  See License.txt in the project root for license information. -->
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\netfx.props" />
   <Import Project="..\..\src\buildtools\buildtools.targets" />
   <PropertyGroup>
@@ -25,20 +26,20 @@
     <Authors>Microsoft Corporation; F# community contributors</Authors>
     <PackageLicenseUrl>https://github.com/fsharp/FSharp.Compiler.Service/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/fsharp/FSharp.Compiler.Service</PackageProjectUrl>
-    <PackageIconUrl>https://raw.github.com/fsharp/FSharp.Compiler.Service/master/misc/logo.png</PackageIconUrl>
+    <PackageIcon>logo.png</PackageIcon>
     <PackageTags>F#, fsharp, interactive, compiler, editor</PackageTags>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <DefineConstants>$(DefineConstants);FX_NO_PDB_READER</DefineConstants>
     <DefineConstants>$(DefineConstants);FX_NO_PDB_WRITER</DefineConstants>
     <DefineConstants>$(DefineConstants);FX_NO_SYMBOLSTORE</DefineConstants>
-    <DefineConstants>$(DefineConstants);FX_NO_LINKEDRESOURCES</DefineConstants>
     <DefineConstants>$(DefineConstants);FX_NO_APP_DOMAINS</DefineConstants>
     <DefineConstants>$(DefineConstants);FX_NO_WIN_REGISTRY</DefineConstants>
     <DefineConstants>$(DefineConstants);FX_NO_SYSTEM_CONFIGURATION</DefineConstants>
     <DefineConstants>$(DefineConstants);FX_RESHAPED_REFEMIT</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\misc\logo.png" Pack="true" Visible="false" PackagePath="" />
     <Compile Include="..\FSharp.Compiler.Service\AssemblyInfo.fs">
       <Link>AssemblyInfo/AssemblyInfo.fs</Link>
     </Compile>
@@ -230,6 +231,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(FSharpSourcesRoot)/absil/ilnativeres.fsi">
+      <Link>AbsIL/ilnativeres.fsi</Link>
+    </Compile>
+    <Compile Include="$(FSharpSourcesRoot)/absil/ilnativeres.fs">
+      <Link>AbsIL/ilnativeres.fs</Link>
+    </Compile>
     <Compile Include="$(FSharpSourcesRoot)/absil/ilsupp.fsi">
       <Link>AbsIL/ilsupp.fsi</Link>
     </Compile>
@@ -511,6 +518,12 @@
     </Compile>
     <Compile Include="$(FSharpSourcesRoot)/fsharp/DotNetFrameworkDependencies.fs">
       <Link>Driver\DotNetFrameworkDependencies.fs</Link>
+    </Compile>
+    <Compile Include="$(FSharpSourcesRoot)/fsharp/DependencyManager.Integration.fsi">
+      <Link>Driver/DependencyManager.Integration.fsi</Link>
+    </Compile>
+    <Compile Include="$(FSharpSourcesRoot)/fsharp/DependencyManager.Integration.fs">
+      <Link>Driver/DependencyManager.Integration.fs</Link>
     </Compile>
     <Compile Include="$(FSharpSourcesRoot)/fsharp/CompileOps.fsi">
       <Link>Driver/CompileOps.fsi</Link>

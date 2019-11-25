@@ -380,6 +380,7 @@ namespace Microsoft.FSharp.Core
         let inline not     (b:bool) = (# "ceq" b false : bool #)
         let inline (=)     (x:int)   (y:int)    = (# "ceq" x y : bool #) 
         let inline (<>)    (x:int)   (y:int)    = not(# "ceq" x y : bool #) 
+        let inline (<=)    (x:int)   (y:int)    = not(# "cgt" x y : bool #)
         let inline (>=)    (x:int)   (y:int)    = not(# "clt" x y : bool #)
         let inline (>=.)   (x:int64) (y:int64)  = not(# "clt" x y : bool #)
         let inline (>=...) (x:char)  (y:char)   = not(# "clt" x y : bool #)
@@ -651,7 +652,14 @@ namespace Microsoft.FSharp.Core
             let inline GetArray2DLength1 (arr: 'T[,]) =  (# "ldlen.multi 2 0" arr : int #)  
             let inline GetArray2DLength2 (arr: 'T[,]) =  (# "ldlen.multi 2 1" arr : int #)  
 
+            let inline GetArray2DLength (arr: 'T[,]) (dim: int) = 
+                match dim with
+                | 0 -> GetArray2DLength1 arr
+                | 1 -> GetArray2DLength2 arr
+                | _ -> raise (System.IndexOutOfRangeException())
+
             let inline Array2DZeroCreate (n:int) (m:int) = (# "newarr.multi 2 !0" type ('T) n m : 'T[,] #)
+
             let GetArray2DSub (src: 'T[,]) src1 src2 len1 len2 =
                 let len1 = (if len1 < 0 then 0 else len1)
                 let len2 = (if len2 < 0 then 0 else len2)
@@ -2251,13 +2259,11 @@ namespace Microsoft.FSharp.Core
             then p <- p + 1; -1L
             else 1L 
 
-        let parseOctalUInt64 (s:string) p l = 
-            let rec parse n acc = if n < l then parse (n+1) (acc *.. 8UL +.. (let c = s.Chars(n) in if c >=... '0' && c <=... '7' then Convert.ToUInt64(c) -.. Convert.ToUInt64('0') else formatError())) else acc in
-            parse p 0UL
-
-        let parseBinaryUInt64 (s:string) p l = 
-            let rec parse n acc = if n < l then parse (n+1) (acc *.. 2UL +.. (match s.Chars(n) with '0' -> 0UL | '1' -> 1UL | _ -> formatError())) else acc in          
-            parse p 0UL
+        let parseBinaryUInt64 (s:string) = 
+            Convert.ToUInt64(s, 2)
+        
+        let parseOctalUInt64 (s:string) =
+            Convert.ToUInt64(s, 8)
 
         let inline removeUnderscores (s:string) =
             match s with
@@ -2274,8 +2280,8 @@ namespace Microsoft.FSharp.Core
             if p >= l then formatError() else
             match specifier with 
             | 'x' -> UInt32.Parse( s.Substring(p), NumberStyles.AllowHexSpecifier,CultureInfo.InvariantCulture)
-            | 'b' -> Convert.ToUInt32(parseBinaryUInt64 s p l)
-            | 'o' -> Convert.ToUInt32(parseOctalUInt64 s p l)
+            | 'b' -> Convert.ToUInt32(parseBinaryUInt64 (s.Substring(p)))
+            | 'o' -> Convert.ToUInt32(parseOctalUInt64  (s.Substring(p)))
             | _ -> UInt32.Parse(s.Substring(p), NumberStyles.Integer, CultureInfo.InvariantCulture) in
 
         let inline int32OfUInt32 (x:uint32) = (# "" x  : int32 #)
@@ -2292,8 +2298,8 @@ namespace Microsoft.FSharp.Core
             if p >= l then formatError() else
             match Char.ToLowerInvariant(specifier) with 
             | 'x' -> sign * (int32OfUInt32 (Convert.ToUInt32(UInt64.Parse(s.Substring(p), NumberStyles.AllowHexSpecifier,CultureInfo.InvariantCulture))))
-            | 'b' -> sign * (int32OfUInt32 (Convert.ToUInt32(parseBinaryUInt64 s p l)))
-            | 'o' -> sign * (int32OfUInt32 (Convert.ToUInt32(parseOctalUInt64 s p l)))
+            | 'b' -> sign * (int32OfUInt32 (Convert.ToUInt32(parseBinaryUInt64 (s.Substring(p)))))
+            | 'o' -> sign * (int32OfUInt32 (Convert.ToUInt32(parseOctalUInt64  (s.Substring(p)))))
             | _ -> Int32.Parse(s, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture)
 
         let ParseInt64 (s:string) = 
@@ -2307,8 +2313,8 @@ namespace Microsoft.FSharp.Core
             if p >= l then formatError() else
             match Char.ToLowerInvariant(specifier) with 
             | 'x' -> sign *. Int64.Parse(s.Substring(p), NumberStyles.AllowHexSpecifier,CultureInfo.InvariantCulture)
-            | 'b' -> sign *. (int64OfUInt64 (parseBinaryUInt64 s p l))
-            | 'o' -> sign *. (int64OfUInt64 (parseOctalUInt64 s p l))
+            | 'b' -> sign *. (int64OfUInt64 (parseBinaryUInt64 (s.Substring(p))))
+            | 'o' -> sign *. (int64OfUInt64 (parseOctalUInt64  (s.Substring(p))))
             | _ -> Int64.Parse(s, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture)
 
         let ParseUInt64     (s:string) : uint64 = 
@@ -2321,8 +2327,8 @@ namespace Microsoft.FSharp.Core
             if p >= l then formatError() else
             match specifier with 
             | 'x' -> UInt64.Parse(s.Substring(p), NumberStyles.AllowHexSpecifier,CultureInfo.InvariantCulture)
-            | 'b' -> parseBinaryUInt64 s p l
-            | 'o' -> parseOctalUInt64 s p l
+            | 'b' -> parseBinaryUInt64 (s.Substring(p))
+            | 'o' -> parseOctalUInt64  (s.Substring(p))
             | _ -> UInt64.Parse(s.Substring(p), NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture) 
 
 
@@ -2900,7 +2906,7 @@ namespace Microsoft.FSharp.Core
     //-------------------------------------------------------------------------
 
     [<DefaultAugmentation(false)>]
-    [<DebuggerDisplay("Some({Value})")>]
+    [<DebuggerDisplay("{DebugDisplay,nq}")>]
     [<CompilationRepresentation(CompilationRepresentationFlags.UseNullAsTrueValue)>]
     [<CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId="Option")>]
     [<StructuralEquality; StructuralComparison>]
@@ -2924,6 +2930,11 @@ namespace Microsoft.FSharp.Core
         static member Some (value) : 'T option = Some(value)
 
         static member op_Implicit (value) : 'T option = Some(value)
+        
+        member private x.DebugDisplay =
+            match x with
+            | None -> "None"
+            | Some _ -> String.Format("Some({0})", anyToStringShowingNull x.Value)
 
         override x.ToString() = 
            // x is non-null, hence Some
@@ -2941,7 +2952,7 @@ namespace Microsoft.FSharp.Core
     [<StructuralEquality; StructuralComparison>]
     [<Struct>]
     [<CompiledName("FSharpValueOption`1")>]
-    [<DebuggerDisplay("ValueSome({Value})")>]
+    [<DebuggerDisplay("{DebugDisplay,nq}")>]
     type ValueOption<'T> =
         | ValueNone : 'T voption
         | ValueSome : 'T -> 'T voption
@@ -2959,11 +2970,17 @@ namespace Microsoft.FSharp.Core
         [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
         member x.IsSome = match x with ValueSome _ -> true | _ -> false
 
-        static member op_Implicit (value) : 'T option = Some(value)
+        static member op_Implicit (value) : 'T voption = ValueSome(value)
+        
+        member private x.DebugDisplay =
+            match x with
+            | ValueNone -> "ValueNone"
+            | ValueSome _ -> String.Format("ValueSome({0})", anyToStringShowingNull x.Value)
 
-        override x.ToString() = 
-           // x is non-null, hence ValueSome
-           "ValueSome("^anyToStringShowingNull x.Value^")"
+        override x.ToString() =
+            match x with
+            | ValueNone -> "ValueNone"
+            | ValueSome _ -> anyToStringShowingNull x.Value
 
     and 'T voption = ValueOption<'T>
 
@@ -3105,36 +3122,32 @@ namespace Microsoft.FSharp.Collections
                elif n = 0 then h
                else nth t (n - 1)
 
-        // similar to 'takeFreshConsTail' but with exceptions same as array slicing
         let rec sliceFreshConsTail cons n l =
             if n = 0 then setFreshConsTail cons [] else
             match l with
-            | [] -> outOfRange()
+            | [] -> setFreshConsTail cons []
             | x :: xs ->
                 let cons2 = freshConsNoTail x
                 setFreshConsTail cons cons2
                 sliceFreshConsTail cons2 (n - 1) xs
 
-        // similar to 'take' but with n representing an index, not a number of elements
-        // and with exceptions matching array slicing
         let sliceTake n l =
             if n < 0 then [] else
             match l with
-            | [] -> outOfRange()
+            | [] -> []
             | x :: xs ->
                 let cons = freshConsNoTail x
                 sliceFreshConsTail cons n xs
                 cons
 
-        // similar to 'skip' but with exceptions same as array slicing
         let sliceSkip n l =
-            if n < 0 then outOfRange()
+            let n2 = if n < 0 then 0 else n
             let rec loop i lst =
                 match lst with
                 | _ when i = 0 -> lst
                 | _ :: t -> loop (i-1) t
-                | [] -> outOfRange()
-            loop n l
+                | [] -> []
+            loop n2 l
 
     type List<'T> with
         [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
@@ -3174,7 +3187,8 @@ namespace Microsoft.FSharp.Collections
             | None, Some(j) -> PrivateListHelpers.sliceTake j l
             | Some(i), Some(j) ->
                 if i > j then [] else
-                PrivateListHelpers.sliceTake (j-i) (PrivateListHelpers.sliceSkip i l)
+                let start = if i < 0 then 0 else i
+                PrivateListHelpers.sliceTake (j - start) (PrivateListHelpers.sliceSkip start l)
 
         interface IEnumerable<'T> with
             member l.GetEnumerator() = PrivateListHelpers.mkListEnumerator l
@@ -4178,7 +4192,6 @@ namespace Microsoft.FSharp.Core
         [<CompiledName("Identity")>]
         let id x = x
 
-#if !FX_NO_SYSTEM_CONSOLE
         // std* are TypeFunctions with the effect of reading the property on instantiation.
         // So, direct uses of stdout should capture the current System.Console.Out at that point.
         [<CompiledName("ConsoleIn")>]
@@ -4189,10 +4202,8 @@ namespace Microsoft.FSharp.Core
 
         [<CompiledName("ConsoleError")>]
         let stderr<'T> = System.Console.Error
-#endif
-            
 
-        module Unchecked = 
+        module Unchecked =
 
             [<CompiledName("Unbox")>]
             let inline unbox<'T> (v:obj) = unboxPrim<'T> v
@@ -4889,12 +4900,16 @@ namespace Microsoft.FSharp.Core
             let PowGeneric (one, mul, value: 'T, exponent) = ComputePowerGenericInlined  one mul value exponent 
 
             let inline ComputeSlice bound start finish length =
-                match start, finish with
-                | None, None -> bound, bound + length - 1
-                | None, Some n when n >= bound  -> bound, n
-                | Some m, None when m <= bound + length -> m, bound + length - 1
-                | Some m, Some n -> m, n
-                | _ -> raise (System.IndexOutOfRangeException())
+                let low = 
+                    match start with
+                    | Some n when n >= bound -> n
+                    | _ -> bound
+                let high = 
+                    match finish with 
+                    | Some m when m < bound + length -> m
+                    | _ -> bound + length - 1
+
+                low, high
 
             let inline GetArraySlice (source: _[]) start finish =
                 let start, finish = ComputeSlice 0 start finish source.Length
@@ -4914,39 +4929,39 @@ namespace Microsoft.FSharp.Core
                 let len2 = (finish2 - start2 + 1)
                 GetArray2DSub source start1 start2 len1 len2
 
-            let inline GetArraySlice2DFixed1 (source: _[,]) index1 start2 finish2 = 
-                let bound2 = source.GetLowerBound(1)
-                let start2, finish2 = ComputeSlice bound2 start2 finish2 (GetArray2DLength2 source)
-                let len2 = (finish2 - start2 + 1)
-                let dst = zeroCreate (if len2 < 0 then 0 else len2)
-                for j = 0 to len2 - 1 do 
-                    SetArray dst j (GetArray2D source index1 (start2+j))
+            let inline GetArraySlice2DFixed (source: _[,]) start finish index nonFixedDim = 
+                let bound = source.GetLowerBound(nonFixedDim)
+                let start, finish = ComputeSlice bound start finish (GetArray2DLength source nonFixedDim)
+                let len = (finish - start + 1)
+                let dst = zeroCreate (if len < 0 then 0 else len)
+                let getArrayElem = 
+                    match nonFixedDim with
+                    | 1 -> (fun i -> GetArray2D source index (start+i))
+                    | 0 -> (fun i -> GetArray2D source (start+i) index)
+                    | _ -> raise (System.IndexOutOfRangeException())
+                for j = 0 to len - 1 do 
+                    SetArray dst j (getArrayElem j)
                 dst
 
-            let inline GetArraySlice2DFixed2 (source: _[,]) start1 finish1 index2 =
-                let bound1 = source.GetLowerBound(0)
-                let start1, finish1 = ComputeSlice bound1 start1 finish1 (GetArray2DLength1 source) 
-                let len1 = (finish1 - start1 + 1)
-                let dst = zeroCreate (if len1 < 0 then 0 else len1)
-                for i = 0 to len1 - 1 do 
-                    SetArray dst i (GetArray2D source (start1+i) index2)
-                dst
+            let inline GetArraySlice2DFixed1 (source: _[,]) index1 start2 finish2 = GetArraySlice2DFixed source start2 finish2 index1 1
 
-            let inline SetArraySlice2DFixed1 (target: _[,]) index1 start2 finish2 (source: _[]) = 
-                let bound2 = target.GetLowerBound(1)
-                let start2  = (match start2 with None -> bound2 | Some n -> n) 
-                let finish2 = (match finish2 with None -> bound2 + GetArray2DLength2 target - 1 | Some n -> n) 
-                let len2 = (finish2 - start2 + 1)
-                for j = 0 to len2 - 1 do
-                    SetArray2D target index1 (bound2+start2+j) (GetArray source j)
+            let inline GetArraySlice2DFixed2 (source: _[,]) start1 finish1 index2 = GetArraySlice2DFixed source start1 finish1 index2 0
 
-            let inline SetArraySlice2DFixed2 (target: _[,]) start1 finish1 index2 (source:_[]) = 
-                let bound1 = target.GetLowerBound(0)
-                let start1  = (match start1 with None -> bound1 | Some n -> n) 
-                let finish1 = (match finish1 with None -> bound1 + GetArray2DLength1 target - 1 | Some n -> n) 
-                let len1 = (finish1 - start1 + 1)
-                for i = 0 to len1 - 1 do
-                    SetArray2D target (bound1+start1+i) index2 (GetArray source i)
+            let inline SetArraySlice2DFixed (target: _[,]) (source: _[]) index start finish nonFixedDim  = 
+                let bound = target.GetLowerBound(nonFixedDim)
+                let start, finish = ComputeSlice bound start finish (GetArray2DLength target nonFixedDim)
+                let len = (finish - start + 1)
+                let setArrayElem = 
+                    match nonFixedDim with
+                    | 1 -> (fun j -> SetArray2D target index (bound + start + j) (GetArray source j)) 
+                    | 0 -> (fun i -> SetArray2D target (bound + start + i) index (GetArray source i))
+                    | _ -> raise (System.IndexOutOfRangeException())
+                for j = 0 to len - 1 do
+                    setArrayElem j
+
+            let inline SetArraySlice2DFixed1 (target: _[,]) index1 start2 finish2 (source: _[]) = SetArraySlice2DFixed target source index1 start2 finish2 1 
+
+            let inline SetArraySlice2DFixed2 (target: _[,]) start1 finish1 index2 (source:_[]) = SetArraySlice2DFixed target source index2 start1 finish1 0
 
             let inline SetArraySlice2D (target: _[,]) start1 finish1 start2 finish2 (source: _[,]) = 
                 let bound1 = target.GetLowerBound(0)
@@ -5012,6 +5027,7 @@ namespace Microsoft.FSharp.Core
                     SetArray dst j (getArrayElem j)
                 dst
 
+<<<<<<< HEAD
             let inline GetArraySlice3DFixedDouble1 (source: _[,,]) index1 index2 start3 finish3 = 
                 GetArraySlice3DFixedDouble source start3 finish3 index1 index2 2
 
@@ -5022,6 +5038,15 @@ namespace Microsoft.FSharp.Core
                 GetArraySlice3DFixedDouble source start1 finish1 index2 index3 0
            
             let inline SetArraySlice3D (target: _[,,]) start1 finish1 start2 finish2 start3 finish3 (source:_[,,]) = 
+=======
+            let inline GetArraySlice3DFixedDouble1 (source: _[,,]) index1 index2 start3 finish3 = GetArraySlice3DFixedDouble source start3 finish3 index1 index2 2
+
+            let inline GetArraySlice3DFixedDouble2 (source: _[,,]) index1 start2 finish2 index3 = GetArraySlice3DFixedDouble source start2 finish2 index1 index3 1
+
+            let inline GetArraySlice3DFixedDouble3 (source: _[,,]) start1 finish1 index2 index3  = GetArraySlice3DFixedDouble source start1 finish1 index2 index3 0
+
+            let SetArraySlice3D (target: _[,,]) start1 finish1 start2 finish2 start3 finish3 (source:_[,,]) = 
+>>>>>>> upstream/release/fsharp5
                 let bound1 = target.GetLowerBound(0)
                 let bound2 = target.GetLowerBound(1)
                 let bound3 = target.GetLowerBound(2)
@@ -5740,13 +5765,6 @@ namespace Microsoft.FSharp.Core
            when ^T : sbyte       = RangeSByte   (retype start) (retype step) (retype finish)
            when ^T : byte        = RangeByte    (retype start) (retype step) (retype finish)
         
-
-        type ``[,]``<'T> with 
-            member arr.GetSlice(x : int, y1 : int option, y2 : int option) = GetArraySlice2DFixed1 arr x y1 y2 
-            member arr.GetSlice(x1 : int option, x2 : int option, y : int) = GetArraySlice2DFixed2 arr x1 x2 y
-
-            member arr.SetSlice(x : int, y1 : int option, y2 : int option, source:'T[]) = SetArraySlice2DFixed1 arr x y1 y2 source
-            member arr.SetSlice(x1 : int option, x2 : int option, y : int, source:'T[]) = SetArraySlice2DFixed2 arr x1 x2 y source
 
         [<CompiledName("Abs")>]
         let inline abs (value: ^T) : ^T = 

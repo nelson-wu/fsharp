@@ -6,19 +6,15 @@ open System
 open System.Text
 
 open Internal.Utilities
-open Internal.Utilities.Collections
-open Internal.Utilities.Text
 open Internal.Utilities.Text.Lexing
 
 open FSharp.Compiler
-open FSharp.Compiler.AbstractIL
 open FSharp.Compiler.AbstractIL.Internal
 open FSharp.Compiler.AbstractIL.Internal.Library
 open FSharp.Compiler.Lib
 open FSharp.Compiler.Ast
 open FSharp.Compiler.PrettyNaming
 open FSharp.Compiler.ErrorLogger
-open FSharp.Compiler.AbstractIL.Diagnostics
 open FSharp.Compiler.Range
 open FSharp.Compiler.Parser
 
@@ -351,7 +347,7 @@ module Keywords =
             | _ -> 
                 IdentifierToken args lexbuf s
 
-    let inline private DoesIdentifierNeedQuotation (s : string) : bool =
+    let DoesIdentifierNeedQuotation (s : string) : bool =
         not (String.forall IsIdentifierPartCharacter s)              // if it has funky chars
         || s.Length > 0 && (not(IsIdentifierFirstCharacter s.[0]))  // or if it starts with a non-(letter-or-underscore)
         || keywordTable.ContainsKey s                               // or if it's a language keyword like "type"

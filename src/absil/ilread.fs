@@ -18,18 +18,14 @@ open System.Runtime.InteropServices
 open System.Text
 open Internal.Utilities
 open Internal.Utilities.Collections
-open FSharp.Compiler.AbstractIL 
 open FSharp.Compiler.AbstractIL.Internal 
-#if !FX_NO_PDB_READER
-open FSharp.Compiler.AbstractIL.Internal.Support 
-#endif
+open FSharp.Compiler.AbstractIL.Internal.Support
 open FSharp.Compiler.AbstractIL.Diagnostics 
 open FSharp.Compiler.AbstractIL.Internal.BinaryConstants 
 open FSharp.Compiler.AbstractIL.IL  
 open FSharp.Compiler.AbstractIL.Internal.Library
 open FSharp.Compiler.ErrorLogger
 open FSharp.Compiler.Range
-open Microsoft.FSharp.NativeInterop
 open System.Reflection
 
 let checking = false  
@@ -1551,14 +1547,10 @@ let readNativeResources (pectxt: PEReader) =
     [ if pectxt.nativeResourcesSize <> 0x0 && pectxt.nativeResourcesAddr <> 0x0 then 
         let start = pectxt.anyV2P (pectxt.fileName + ": native resources", pectxt.nativeResourcesAddr)
         if pectxt.noFileOnDisk then
-#if !FX_NO_LINKEDRESOURCES
             let unlinkedResource =
                 let linkedResource = seekReadBytes (pectxt.pefile.GetView()) start pectxt.nativeResourcesSize
                 unlinkResource pectxt.nativeResourcesAddr linkedResource
             yield ILNativeResource.Out unlinkedResource
-#else
-            ()
-#endif
         else
             yield ILNativeResource.In (pectxt.fileName, pectxt.nativeResourcesAddr, start, pectxt.nativeResourcesSize ) ]
 
@@ -4134,7 +4126,6 @@ let OpenILModuleReader fileName opts =
 
 [<AutoOpen>]
 module Shim =
-    open FSharp.Compiler.Lib
 
     type IAssemblyReader =
         abstract GetILModuleReader: filename: string * readerOptions: ILReaderOptions -> ILModuleReader
