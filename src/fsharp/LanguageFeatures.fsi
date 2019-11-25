@@ -15,6 +15,7 @@ type LanguageFeature =
     | NameOf = 6
     | ImplicitYield = 7
     | OpenStaticClasses = 8
+    | FixedIndexSlice3d4d = 11
 
 
 /// LanguageVersion management

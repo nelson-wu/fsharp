@@ -28,6 +28,7 @@ type LanguageFeature =
     | NameOf = 6
     | ImplicitYield = 7
     | OpenStaticClasses = 8
+    | FixedIndexSlice3d4d = 11
 
 
 /// LanguageVersion management
@@ -55,6 +56,7 @@ type LanguageVersion (specifiedVersion) =
         LanguageFeature.NameOf, previewVersion
         LanguageFeature.ImplicitYield, languageVersion47
         LanguageFeature.OpenStaticClasses, previewVersion
+        LanguageFeature.FixedIndexSlice3d4d, previewVersion
         |]
 
     let specified =
