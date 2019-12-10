@@ -134,6 +134,23 @@ arr4.[*, 1, 1, 1] <- arr1
             |]
 
 
+    [<Test>]
+    let ``Fixed index slicing should be overridable with different types in 47``() = 
+        CompilerAssert.RunScriptWithOptions [| "--langversion:4.7" |]
+            """
+open System
 
+module Extensions = 
+    type ``[,,]``<'T> with 
+        member q.GetSlice(xI :System.DateTime, y1 : int option, y2: int option, z : int) = "success"
+    
+open Extensions
 
-
+let array3D () = Array3D.zeroCreate 1 1 1 
+let x : double [,,] = array3D ()
+        
+let zqz9 = x.[System.DateTime.Now, *, 1]
+if zqz9 <> "success" then failwithf "expected 'success' but got %s" zqz9
+Console.WriteLine()
+            """
+            []

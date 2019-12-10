@@ -143,3 +143,56 @@ if a.[^2..1] <> 13 then failwith "expected 13"
             39
             (12,7,12,9)
             "The field, constructor or member 'GetReverseIndex' is not defined."
+
+    [<Test>]
+    let ``Custom collection with only 2D slicing should return error for 1D slice``() =
+        CompilerAssert.TypeCheckSingleError
+            """
+open System
+
+type Foo<'a>() =
+    let mutable m_lastLB1 : 'a option = None
+    let mutable m_lastUB1 : 'a option = None
+
+    let mutable m_lastLB2 : 'a option = None
+    let mutable m_lastUB2 : 'a option = None
+
+
+    member this.GetSlice(lb1, ub1, lb2, ub2) = 
+        m_lastLB1 <- lb1
+        m_lastUB1 <- ub1
+        m_lastLB2 <- lb2
+        m_lastUB2 <- ub2
+        ()
+
+    member this.LastLB1 = m_lastLB1
+    member this.LastUB1 = m_lastUB1
+    member this.LastLB2 = m_lastLB2
+    member this.LastUB2 = m_lastUB2
+
+let f = new Foo<char>()
+
+let _ = f.[*]
+            """
+            FSharpErrorSeverity.Error
+            501
+            (26,9,26,14)
+            "The member or object constructor 'GetSlice' takes 4 argument(s) but is here given 2. The required signature is 'member Foo.GetSlice : lb1:'a option * ub1:'a option * lb2:'a option * ub2:'a option -> unit'."
+
+    [<Test>]
+    let ``Custom collection should be able to support n-rank slicing``() =
+        CompilerAssert.RunScript
+            """
+open System
+
+type Foo() =
+    member _.GetSlice(a: int, [<ParamArray>] arr: int option array) = 
+        a, arr
+
+let x = Foo()
+
+let a = x.[0, 1.., 2..3, ..4, *]
+
+if a <> (0, [| Some 1; None; Some 2; Some 3; None; Some 4; None; None |]) then failwithf "got %A" a
+            """
+            []
